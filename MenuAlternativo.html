@@ -2,27 +2,43 @@
 
 
 let iniciar, regras, creditos, sair;
-var tela_ativa = 1
+var tela_ativa = 0
 var opcao = 1
 var x = 475
 var y = 95
-//tela ativa 1 = menu
+
+var heroDireita = [],heroEsquerda = [], heroPulandoDireita = [];
+var heroDireita = false, heroPulandoDireita = false, heroEsquerda = false, cont = 0;
+var xSpace;
+var playWeaponState = false;
+var heroS = true;
+var Xo = 0;
+var Yo = 160;
+var xWalk = 0;
+var yJump = 20;
+var gravidade = 1.5;
+//tela ativa 0 = menu
+//tela ativa 1 = jogar
 //tela ativa 2 = regras
 //tela ativa 3 = creditos
 //tela ativa 4 = sair
 //Variáveis para serem usados no menu
-
 let value = 0;
+
 
 function setup() {
   createCanvas(1280, 720);
   background('black');
 }
 
+
 function draw() {
   switch (tela_ativa) {
-    case 1:
+    case 0:
       menu();
+      break;
+    case 1:
+      jogar();
       break;
     case 2:
       rules();
@@ -38,10 +54,11 @@ function draw() {
 }
 
 function menu() {
-  background('black');
+  background('Black');
   fill('white');
   stroke('black');
   strokeWeight(4);
+  rect(480, 0, 1, 1, 50);
   rect(480, 100, 320, 90, 50);
   rect(480, 200, 320, 90, 50);
   rect(480, 300, 320, 90, 50);
@@ -90,36 +107,86 @@ function credits() {
 }
 
 function quit() {
-  //R, G, B
-  background('#BDB76B');
+  background('black');
 
   fill('white');
   stroke('black');
   strokeWeight(1);
 
   textSize(28);
-  fill('black');
+  fill('white');
 
   text('saindo', 40, 55);
   window.close();
 }
 
+  function preload() {
+  fundodafase = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/backgroundgame.jpeg'); //Fundo do game
+  heroS = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Fudje%20duyxce%202.gif'); //personagem parado
+  heroSGif = createImg('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Fudje%20duyxce%202.gif');https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Fudje%20duyxce%202.gif
+  heroAtack = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Jogando%20o%20bisturi%20invertido.gif') //personagem atacando
+    heroAtackGif = createImg('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Jogando%20o%20bisturi%20invertido.gif')
+  for(i = 0; i < 1  ; i++) {
+  heroDireita = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Fudje%20duyxce%20andando%20direita%20com%20arma.gif');
+    heroDireitaGif = createImg('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Fudje%20duyxce%20andando%20direita%20com%20arma.gif');
+  heroEsquerda = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Fudje%20duyxce%20andando%20esquerda%20com%20arma.gif')
+    heroEsquerdaGif = createImg('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Fudje%20duyxce%20andando%20esquerda%20com%20arma.gif')
+  heroPulandoDireita = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Fudje%20duyxce%20pulando%20direita.gif');     
+    heroPulandoDireitaGif = createImg('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/GIFS/Fudje%20duyxce%20pulando%20direita.gif');
+}
+  /*monster = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/Monstro.gif');
+  globFrente = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/normal_gobulo_frente.png') ;
+  globLado = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/normal_globulo_lado.png');
+  arma = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/arma.gif');
+  raio = loadImage('https://raw.githubusercontent.com/Ueboy/ueboy.github.io/master/raio.gif');
+  */
+  }
+
+
 function keyPressed(){
-console.log(keyCode);
   
-  if(tela_ativa == 2 || tela_ativa == 3)
-    tela_ativa = 1;
-  
+if(tela_ativa == 1){
+      if(keyCode == RIGHT_ARROW) {
+    heroDireitaGif = true;
+    heroSGif = false;
+    heroPulandoDireitaGif = false;
+    heroEsquerdaGif = false;
+  }
+  if(keyCode == UP_ARROW && (! heroPulandoDireita) && (! heroDireita)) {
+    heroDireita = false;
+    heroS = false;
+    heroPulandoDireita = true;
+    heroEsquerda = false;
+  }
+  if(keyCode == LEFT_ARROW && (! heroEsquerda)) {
+    heroDireita = false;
+    heroS = false;
+    heroPulandoDireita = false;
+    heroEsquerda = true;
+  }
+  if(keyCode == 32 && (! playWeaponState)) {
+    playWeaponState = true;
+    heroDireita = false;
+    heroS = false;
+    heroPulandoDireita = false;
+    heroEsquerda = false;
+  }}else{
+    
+if(tela_ativa == 0,2,3,4)
   if (keyCode === ENTER)
     tela_ativa = opcao;
   
   if(keyCode == BACKSPACE)
-    tela_ativa = 1
+    tela_ativa = 0
   
-  if(keyCode === DOWN_ARROW){
+  
 
+  if(keyCode === DOWN_ARROW){
     if(y<300){
     y+=100;
+    if(opcao==0)
+    opcao=1;
+    else
     if(opcao==1)
     opcao=2;
     else
@@ -132,8 +199,11 @@ console.log(keyCode);
     
   }else 
     if(keyCode===UP_ARROW){
-    if(y>100){
-      y-=100 
+    if(y>0){
+      y-=100
+      if(opcao==1){
+      opcao=0
+      } else{
       if(opcao==2){
       opcao=1
       } else{
@@ -147,8 +217,56 @@ console.log(keyCode);
       }
       }
       }
+      }
+  
   console.log("opcao: "+opcao);
   console.log("Tela ativa: "+tela_ativa);
+}}
+
+//////////////////////////////////////////////////////////////////////////////
+function jogar() {
+ 
+  image(fundodafase, 0, 0, 2560, 720);  
+  
+  
+  heroSGif.position(0, 719);
+  
+  
+  if(heroDireita) { 
+    image(heroDireita [cont],Xo + xWalk, Yo);
+    xSpace = Xo + xWalk;
+    cont++;
+    xWalk += 3;  
+  } 
+  if(heroEsquerda) {
+    image(heroEsquerda[ cont ],xSpace - xWalk, Yo);
+    cont++;
+    xWalk += 3;
+  }
+ if(playWeaponState) {
+    image(heroAtack,Xo + xWalk, Yo);
+    xWalk += 3;
+  }
+  if(heroPulandoDireita) {
+    image(heroPulandoDireita[ cont ], Xo, Yo - yJump);
+    cont++;
+    yJump += 2;
+    if(yJump >=150) {
+      yJump = 0;
+    }
+  }
+  if(cont >= 1) {
+    cont = 0;
+  }
+  
+  image(monster, 300, 85);  
+  image(globFrente, 600, 110);
+  image(globLado, 600, 80);
+  image(arma, 700, 75);
+  image(raio, 800, 100);
+  keyPressed();
+  //main();
+  
 }
 
 <script>
